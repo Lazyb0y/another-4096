@@ -4,7 +4,12 @@ class PreloadScene extends Phaser.Scene {
     }
 
     preload() {
+        /* Loading images and sprites */
         this.load.image("emptytile", "assets/sprites/emptytile.png");
+        this.load.spritesheet("tiles", "assets/sprites/tiles.png", {
+            frameWidth: Another4096.GameOptions.tileSize,
+            frameHeight: Another4096.GameOptions.tileSize
+        });
     }
 
     create() {

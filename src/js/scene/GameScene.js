@@ -3,12 +3,23 @@ class GameScene extends Phaser.Scene {
         super("GameScene");
     }
 
+    init() {
+        this.boardArray = [];
+    }
+
     create() {
         /* Initializing blank board */
         for (let i = 0; i < Another4096.GameOptions.boardSize.rows; i++) {
+            this.boardArray[i] = [];
             for (let j = 0; j < Another4096.GameOptions.boardSize.cols; j++) {
                 let tilePosition = GameScene.getTilePosition(i, j);
                 this.add.image(tilePosition.x, tilePosition.y, "emptytile");
+                let tile = this.add.sprite(tilePosition.x, tilePosition.y, "tiles", 0);
+                tile.visible = false;
+                this.boardArray[i][j] = {
+                    tileValue: 0,
+                    tileSprite: tile
+                }
             }
         }
     }
