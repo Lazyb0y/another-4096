@@ -1,5 +1,14 @@
 var Another4096 = Another4096 || {};
 
+Another4096.GameOptions = {
+    tileSize: 200,
+    tileSpacing: 20,
+    boardSize: {
+        rows: 4,
+        cols: 4
+    }
+};
+
 /* Resizing the game to cover the wider area possible */
 function resizeGame() {
     var canvas = document.querySelector("canvas");
@@ -19,8 +28,8 @@ function resizeGame() {
 
 window.onload = function () {
     Another4096.GameConfig = {
-        width: 900,
-        height: 900,
+        width: Another4096.GameOptions.boardSize.cols * (Another4096.GameOptions.tileSize + Another4096.GameOptions.tileSpacing) + Another4096.GameOptions.tileSpacing,
+        height: Another4096.GameOptions.boardSize.rows * (Another4096.GameOptions.tileSize + Another4096.GameOptions.tileSpacing) + Another4096.GameOptions.tileSpacing,
         backgroundColor: 0xecf0f1,
         scene: [PreloadScene, GameScene]
     };
