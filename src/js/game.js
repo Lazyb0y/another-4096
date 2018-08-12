@@ -6,7 +6,8 @@ Another4096.GameOptions = {
     boardSize: {
         rows: 4,
         cols: 4
-    }
+    },
+    tweenSpeed: 50
 };
 
 /* Resizing the game to cover the wider area possible */

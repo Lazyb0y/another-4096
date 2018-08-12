@@ -60,6 +60,14 @@ class GameScene extends Phaser.Scene {
             this.boardArray[chosenTile.row][chosenTile.col].tileValue = 1;
             this.boardArray[chosenTile.row][chosenTile.col].tileSprite.visible = true;
             this.boardArray[chosenTile.row][chosenTile.col].tileSprite.setFrame(0);
+            this.boardArray[chosenTile.row][chosenTile.col].tileSprite.alpha = 0;
+
+            /* Showing tile appearing animation */
+            this.tweens.add({
+                targets: [this.boardArray[chosenTile.row][chosenTile.col].tileSprite],
+                alpha: 1,
+                duration: Another4096.GameOptions.tweenSpeed
+            });
         }
     }
 }
