@@ -22,6 +22,9 @@ class GameScene extends Phaser.Scene {
                 }
             }
         }
+
+        this.addTile();
+        this.addTile();
     }
 
     /**
@@ -34,5 +37,29 @@ class GameScene extends Phaser.Scene {
         let posX = Another4096.GameOptions.tileSpacing * (col + 1) + Another4096.GameOptions.tileSize * (col + 0.5);
         let posY = Another4096.GameOptions.tileSpacing * (row + 1) + Another4096.GameOptions.tileSize * (row + 0.5);
         return new Phaser.Geom.Point(posX, posY);
+    }
+
+    addTile() {
+        let emptyTiles = [];
+
+        /* Finding all empty tiles */
+        for (let i = 0; i < Another4096.GameOptions.boardSize.rows; i++) {
+            for (let j = 0; j < Another4096.GameOptions.boardSize.cols; j++) {
+                if (this.boardArray[i][j].tileValue === 0) {
+                    emptyTiles.push({
+                        row: i,
+                        col: j
+                    })
+                }
+            }
+        }
+
+        if (emptyTiles.length > 0) {
+            /* Randomly selecting a tile and showing in board as Tile 2 */
+            let chosenTile = Phaser.Utils.Array.GetRandom(emptyTiles);
+            this.boardArray[chosenTile.row][chosenTile.col].tileValue = 1;
+            this.boardArray[chosenTile.row][chosenTile.col].tileSprite.visible = true;
+            this.boardArray[chosenTile.row][chosenTile.col].tileSprite.setFrame(0);
+        }
     }
 }
