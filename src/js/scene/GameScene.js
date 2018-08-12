@@ -93,7 +93,7 @@ class GameScene extends Phaser.Scene {
                     break;
                 case "KeyD":
                 case "ArrowRight":
-                    this.makeMove(Another4096.SwipeDirection.RIGHT);
+                    this.makeMove(Another4096.SwipeDirection.Right);
                     break;
                 case "KeyW":
                 case "ArrowUp":
