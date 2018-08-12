@@ -3,6 +3,10 @@ class PreloadScene extends Phaser.Scene {
         super("PreloadScene");
     }
 
+    preload() {
+        this.load.image("emptytile", "assets/sprites/emptytile.png");
+    }
+
     create() {
         this.scene.start("GameScene");
     }

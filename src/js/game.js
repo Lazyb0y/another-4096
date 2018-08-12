@@ -19,8 +19,8 @@ function resizeGame() {
 
 window.onload = function () {
     Another4096.GameConfig = {
-        width: 480,
-        height: 640,
+        width: 900,
+        height: 900,
         backgroundColor: 0xecf0f1,
         scene: [PreloadScene, GameScene]
     };
