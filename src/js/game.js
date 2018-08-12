@@ -26,6 +26,7 @@ window.onload = function () {
 
     /* Initializing the Phaser 3 framework */
     Another4096.game = new Phaser.Game(Another4096.GameConfig);
+    window.focus();
     resizeGame();
     window.addEventListener("resize", resizeGame);
 };
