@@ -21,7 +21,8 @@ window.onload = function () {
     Another4096.GameConfig = {
         width: 480,
         height: 640,
-        backgroundColor: 0xecf0f1
+        backgroundColor: 0xecf0f1,
+        scene: PreloadScene
     };
 
     /* Initializing the Phaser 3 framework */
