@@ -22,7 +22,7 @@ window.onload = function () {
         width: 480,
         height: 640,
         backgroundColor: 0xecf0f1,
-        scene: PreloadScene
+        scene: [PreloadScene, GameScene]
     };
 
     /* Initializing the Phaser 3 framework */
