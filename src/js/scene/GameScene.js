@@ -81,7 +81,45 @@ class GameScene extends Phaser.Scene {
     }
 
     makeMove(d) {
-        console.log("about to move.");
+        this.canMove = false;
+        let movedTiles = 0;
+
+        /*  Calculation the direction to move along rows and columns */
+        let dRow = (d === Another4096.SwipeDirection.Left || d === Another4096.SwipeDirection.Right) ? 0 : d === Another4096.SwipeDirection.Up ? -1 : 1;
+        let dCol = (d === Another4096.SwipeDirection.Up || d === Another4096.SwipeDirection.Down) ? 0 : d === Another4096.SwipeDirection.Left ? -1 : 1;
+
+        /* Determining row and column index to ignore 1st row/column  */
+        let firstRow = (d === Another4096.SwipeDirection.Up) ? 1 : 0;
+        let lastRow = Another4096.GameOptions.boardSize.rows - ((d === Another4096.SwipeDirection.Down) ? 1 : 0);
+        let firstCol = (d === Another4096.SwipeDirection.Left) ? 1 : 0;
+        let lastCol = Another4096.GameOptions.boardSize.cols - ((d === Another4096.SwipeDirection.Right) ? 1 : 0);
+
+        for (let i = firstRow; i < lastRow; i++) {
+            for (let j = firstCol; j < lastCol; j++) {
+                let curRow = dRow === 1 ? (lastRow - 1) - i : i;
+                let curCol = dCol === 1 ? (lastCol - 1) - j : j;
+                let tileValue = this.boardArray[curRow][curCol].tileValue;
+                if (tileValue !== 0) {
+                    let newRow = curRow;
+                    let newCol = curCol;
+                    while (this.isLegalPosition(newRow + dRow, newCol + dCol)) {
+                        newRow += dRow;
+                        newCol += dCol;
+                    }
+                    movedTiles++;
+                    this.boardArray[curRow][curCol].tileSprite.depth = movedTiles;
+                    let newPos = GameScene.getTilePosition(newRow, newCol);
+                    this.boardArray[curRow][curCol].tileSprite.x = newPos.x;
+                    this.boardArray[curRow][curCol].tileSprite.y = newPos.y;
+                }
+            }
+        }
+    }
+
+    isLegalPosition(row, col) {
+        let rowInside = row >= 0 && row < Another4096.GameOptions.boardSize.rows;
+        let colInside = col >= 0 && col < Another4096.GameOptions.boardSize.cols;
+        return rowInside && colInside;
     }
 
     handleKey(e) {
