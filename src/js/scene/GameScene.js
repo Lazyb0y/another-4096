@@ -5,6 +5,7 @@ class GameScene extends Phaser.Scene {
 
     init() {
         this.boardArray = [];
+        this.canMove = false;
     }
 
     create() {
@@ -25,6 +26,10 @@ class GameScene extends Phaser.Scene {
 
         this.addTile();
         this.addTile();
+
+        /* Enabled player input method */
+        this.input.keyboard.on("keydown", this.handleKey, this);
+        this.input.on("pointerup", this.handleSwipe, this);
     }
 
     /**
@@ -66,8 +71,64 @@ class GameScene extends Phaser.Scene {
             this.tweens.add({
                 targets: [this.boardArray[chosenTile.row][chosenTile.col].tileSprite],
                 alpha: 1,
-                duration: Another4096.GameOptions.tweenSpeed
+                duration: Another4096.GameOptions.tweenSpeed,
+                callbackScope: this,
+                onComplete: function () {
+                    this.canMove = true;
+                }
             });
+        }
+    }
+
+    makeMove(d) {
+        console.log("about to move.");
+    }
+
+    handleKey(e) {
+        if (this.canMove) {
+            switch (e.code) {
+                case "KeyA":
+                case "ArrowLeft":
+                    this.makeMove(Another4096.SwipeDirection.Left);
+                    break;
+                case "KeyD":
+                case "ArrowRight":
+                    this.makeMove(Another4096.SwipeDirection.RIGHT);
+                    break;
+                case "KeyW":
+                case "ArrowUp":
+                    this.makeMove(Another4096.SwipeDirection.Up);
+                    break;
+                case "KeyS":
+                case "ArrowDown":
+                    this.makeMove(Another4096.SwipeDirection.Down);
+                    break;
+            }
+        }
+    }
+
+    handleSwipe(e) {
+        if (this.canMove) {
+            let swipeTime = e.upTime - e.downTime;
+            let fastEnough = swipeTime < Another4096.GameOptions.swipe.maxTime;
+            let swipe = new Phaser.Geom.Point(e.upX - e.downX, e.upY - e.downY);
+            let swipeMagnitude = Phaser.Geom.Point.GetMagnitude(swipe);
+            let longEnough = swipeMagnitude > Another4096.GameOptions.swipe.minDistance;
+            if (longEnough && fastEnough) {
+                Phaser.Geom.Point.SetMagnitude(swipe, 1);
+                if (swipe.x > Another4096.GameOptions.swipe.minNormal) {
+                    this.makeMove(Another4096.SwipeDirection.Right);
+                }
+                if (swipe.x < -Another4096.GameOptions.swipe.minNormal) {
+                    this.makeMove(Another4096.SwipeDirection.Left);
+                }
+                if (swipe.y > Another4096.GameOptions.swipe.minNormal) {
+                    this.makeMove(Another4096.SwipeDirection.Down);
+                }
+                if (swipe.y < -Another4096.GameOptions.swipe.minNormal) {
+                    this.makeMove(Another4096.SwipeDirection.Up);
+                }
+            }
         }
     }
 }

@@ -7,7 +7,19 @@ Another4096.GameOptions = {
         rows: 4,
         cols: 4
     },
-    tweenSpeed: 50
+    tweenSpeed: 50,
+    swipe: {
+        maxTime: 1000,
+        minDistance: 20,
+        minNormal: 0.85
+    }
+};
+
+Another4096.SwipeDirection = {
+    Left: 0,
+    Right: 1,
+    Up: 2,
+    Down: 3
 };
 
 /* Resizing the game to cover the wider area possible */
