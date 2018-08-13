@@ -21,6 +21,9 @@ class PreloadScene extends Phaser.Scene {
         /* Loading sound effect */
         this.load.audio("move", ["assets/sounds/move.ogg", "assets/sounds/move.mp3"]);
         this.load.audio("grow", ["assets/sounds/grow.ogg", "assets/sounds/grow.mp3"]);
+
+        /* Loading font */
+        this.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
     }
 
     create() {
