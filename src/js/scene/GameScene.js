@@ -6,6 +6,7 @@ class GameScene extends Phaser.Scene {
     init() {
         this.boardArray = [];
         this.canMove = false;
+        this.movingTiles = 0;
     }
 
     create() {
@@ -83,7 +84,7 @@ class GameScene extends Phaser.Scene {
 
     makeMove(d) {
         this.canMove = false;
-        let movedTiles = 0;
+        this.movingTiles = 0;
 
         /*  Calculation the direction to move along rows and columns */
         let dRow = (d === Another4096.SwipeDirection.Left || d === Another4096.SwipeDirection.Right) ? 0 : d === Another4096.SwipeDirection.Up ? -1 : 1;
@@ -95,7 +96,6 @@ class GameScene extends Phaser.Scene {
         let firstCol = (d === Another4096.SwipeDirection.Left) ? 1 : 0;
         let lastCol = Another4096.GameOptions.boardSize.cols - ((d === Another4096.SwipeDirection.Right) ? 1 : 0);
 
-        let movedSomething = false;
         for (let i = firstRow; i < lastRow; i++) {
             for (let j = firstCol; j < lastCol; j++) {
                 let curRow = dRow === 1 ? (lastRow - 1) - i : i;
@@ -108,13 +108,10 @@ class GameScene extends Phaser.Scene {
                         newRow += dRow;
                         newCol += dCol;
                     }
-                    movedTiles++;
+
                     if (newRow !== curRow || newCol !== curCol) {
-                        movedSomething = true;
-                        this.boardArray[curRow][curCol].tileSprite.depth = movedTiles;
                         let newPos = GameScene.getTilePosition(newRow, newCol);
-                        this.boardArray[curRow][curCol].tileSprite.x = newPos.x;
-                        this.boardArray[curRow][curCol].tileSprite.y = newPos.y;
+                        this.moveTile(this.boardArray[curRow][curCol].tileSprite, newPos);
                         this.boardArray[curRow][curCol].tileValue = 0;
 
                         /* Merging tiles */
@@ -131,12 +128,29 @@ class GameScene extends Phaser.Scene {
             }
         }
 
-        if (movedSomething) {
-            this.refreshBoard();
-        }
-        else {
+        if (this.movingTiles === 0) {
             this.canMove = true;
         }
+    }
+
+    moveTile(tile, point) {
+        this.movingTiles++;
+        tile.depth = this.movingTiles;
+        let distance = Math.abs(tile.x - point.x) + Math.abs(tile.y - point.y);
+        this.tweens.add({
+            targets: [tile],
+            x: point.x,
+            y: point.y,
+            duration: Another4096.GameOptions.tweenSpeed * distance / Another4096.GameOptions.tileSize,
+            callbackScope: this,
+            onComplete: function () {
+                this.movingTiles--;
+                tile.depth = 0;
+                if (this.movingTiles === 0) {
+                    this.refreshBoard();
+                }
+            }
+        })
     }
 
     isLegalPosition(row, col, value) {
