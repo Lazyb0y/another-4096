@@ -26,6 +26,9 @@ class GameScene extends Phaser.Scene {
             }
         }
 
+        /* Initializing sounds */
+        this.moveSound = this.sound.add("move");
+
         this.addTile();
         this.addTile();
 
@@ -130,6 +133,9 @@ class GameScene extends Phaser.Scene {
 
         if (this.movingTiles === 0) {
             this.canMove = true;
+        }
+        else {
+            this.moveSound.play();
         }
     }
 

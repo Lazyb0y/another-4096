@@ -10,6 +10,9 @@ class PreloadScene extends Phaser.Scene {
             frameWidth: Another4096.GameOptions.tileSize,
             frameHeight: Another4096.GameOptions.tileSize
         });
+
+        /* Loading sound effect */
+        this.load.audio("move", ["assets/sounds/move.ogg", "assets/sounds/move.mp3"]);
     }
 
     create() {
