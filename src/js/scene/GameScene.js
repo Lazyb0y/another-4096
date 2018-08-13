@@ -244,6 +244,11 @@ class GameScene extends Phaser.Scene {
             return false;
         }
 
+        /* Limiting tile value to “4096” */
+        if (this.boardArray[row][col].tileValue === 12) {
+            return false;
+        }
+
         let emptySpot = this.boardArray[row][col].tileValue === 0;
         let sameValue = this.boardArray[row][col].tileValue === value;
         let alreadyUpgraded = this.boardArray[row][col].upgraded;
