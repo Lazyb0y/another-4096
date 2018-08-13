@@ -33,6 +33,10 @@ class GameScene extends Phaser.Scene {
         let howTo = this.add.image(Another4096.game.config.width, 5, "howtoplay");
         howTo.setOrigin(1, 0);
 
+        let scoreXY = GameScene.getTilePosition(-0.8, 1);
+        this.add.image(scoreXY.x, scoreXY.y, "scorepanel");
+        this.add.image(scoreXY.x, scoreXY.y - 70, "scorelabels");
+
         /* Initializing sounds */
         this.moveSound = this.sound.add("move");
         this.growSound = this.sound.add("grow");
