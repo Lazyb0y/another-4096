@@ -12,7 +12,8 @@ Another4096.GameOptions = {
         maxTime: 1000,
         minDistance: 20,
         minNormal: 0.85
-    }
+    },
+    aspectRatio: 16 / 9
 };
 
 Another4096.SwipeDirection = {
@@ -40,9 +41,13 @@ function resizeGame() {
 }
 
 window.onload = function () {
+    let tileAndSpacing = Another4096.GameOptions.tileSize + Another4096.GameOptions.tileSpacing;
+    let width = Another4096.GameOptions.boardSize.cols * tileAndSpacing;
+    width += Another4096.GameOptions.tileSpacing;
+
     Another4096.GameConfig = {
-        width: Another4096.GameOptions.boardSize.cols * (Another4096.GameOptions.tileSize + Another4096.GameOptions.tileSpacing) + Another4096.GameOptions.tileSpacing,
-        height: Another4096.GameOptions.boardSize.rows * (Another4096.GameOptions.tileSize + Another4096.GameOptions.tileSpacing) + Another4096.GameOptions.tileSpacing,
+        width: width,
+        height: width * Another4096.GameOptions.aspectRatio,
         backgroundColor: 0xecf0f1,
         scene: [PreloadScene, GameScene]
     };

@@ -47,6 +47,12 @@ class GameScene extends Phaser.Scene {
     static getTilePosition(row, col) {
         let posX = Another4096.GameOptions.tileSpacing * (col + 1) + Another4096.GameOptions.tileSize * (col + 0.5);
         let posY = Another4096.GameOptions.tileSpacing * (row + 1) + Another4096.GameOptions.tileSize * (row + 0.5);
+
+        let boardHeight = Another4096.GameOptions.boardSize.rows * Another4096.GameOptions.tileSize;
+        boardHeight += (Another4096.GameOptions.boardSize.rows + 1) * Another4096.GameOptions.tileSpacing;
+        let offsetY = (Another4096.game.config.height - boardHeight) / 2;
+        posY += offsetY;
+
         return new Phaser.Geom.Point(posX, posY);
     }
 
