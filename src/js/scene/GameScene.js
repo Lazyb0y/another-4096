@@ -28,6 +28,7 @@ class GameScene extends Phaser.Scene {
 
         /* Initializing sounds */
         this.moveSound = this.sound.add("move");
+        this.growSound = this.sound.add("grow");
 
         this.addTile();
         this.addTile();
@@ -161,6 +162,7 @@ class GameScene extends Phaser.Scene {
     }
 
     upgradeTile(tile) {
+        this.growSound.play();
         tile.setFrame(tile.frame.name + 1);
         this.tweens.add({
             targets: [tile],
