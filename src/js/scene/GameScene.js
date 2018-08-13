@@ -102,7 +102,7 @@ class GameScene extends Phaser.Scene {
                 if (tileValue !== 0) {
                     let newRow = curRow;
                     let newCol = curCol;
-                    while (this.isLegalPosition(newRow + dRow, newCol + dCol)) {
+                    while (this.isLegalPosition(newRow + dRow, newCol + dCol, tileValue)) {
                         newRow += dRow;
                         newCol += dCol;
                     }
@@ -125,12 +125,40 @@ class GameScene extends Phaser.Scene {
                 }
             }
         }
+
+        this.refreshBoard();
     }
 
-    isLegalPosition(row, col) {
+    isLegalPosition(row, col, value) {
         let rowInside = row >= 0 && row < Another4096.GameOptions.boardSize.rows;
         let colInside = col >= 0 && col < Another4096.GameOptions.boardSize.cols;
-        return rowInside && colInside;
+        if (!rowInside || !colInside) {
+            return false;
+        }
+
+        let emptySpot = this.boardArray[row][col].tileValue === 0;
+        let sameValue = this.boardArray[row][col].tileValue === value;
+        return emptySpot || sameValue;
+    }
+
+    refreshBoard() {
+        for (let i = 0; i < Another4096.GameOptions.boardSize.rows; i++) {
+            for (let j = 0; j < Another4096.GameOptions.boardSize.cols; j++) {
+                let spritePosition = GameScene.getTilePosition(i, j);
+                this.boardArray[i][j].tileSprite.x = spritePosition.x;
+                this.boardArray[i][j].tileSprite.y = spritePosition.y;
+                let tileValue = this.boardArray[i][j].tileValue;
+                if (tileValue > 0) {
+                    this.boardArray[i][j].tileSprite.visible = true;
+                    this.boardArray[i][j].tileSprite.setFrame(tileValue - 1);
+                }
+                else {
+                    this.boardArray[i][j].tileSprite.visible = false;
+                }
+            }
+        }
+
+        this.addTile();
     }
 
     handleKey(e) {
