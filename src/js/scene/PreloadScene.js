@@ -10,6 +10,7 @@ class PreloadScene extends Phaser.Scene {
         this.load.image("howtoplay", "assets/sprites/howtoplay.png");
         this.load.image("scorelabels", "assets/sprites/scorelabels.png");
         this.load.image("scorepanel", "assets/sprites/scorepanel.png");
+        this.load.image("restart", "assets/sprites/restart.png");
 
         this.load.spritesheet("tiles", "assets/sprites/tiles.png", {
             frameWidth: Another4096.GameOptions.tileSize,

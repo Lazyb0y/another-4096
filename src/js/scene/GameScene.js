@@ -37,6 +37,13 @@ class GameScene extends Phaser.Scene {
         this.add.image(scoreXY.x, scoreXY.y, "scorepanel");
         this.add.image(scoreXY.x, scoreXY.y - 70, "scorelabels");
 
+        let restartXY = GameScene.getTilePosition(-0.8, Another4096.GameOptions.boardSize.cols - 1);
+        let restartButton = this.add.sprite(restartXY.x, restartXY.y, "restart");
+        restartButton.setInteractive();
+        restartButton.on("pointerdown", function () {
+            this.scene.start("GameScene");
+        }, this);
+
         /* Initializing sounds */
         this.moveSound = this.sound.add("move");
         this.growSound = this.sound.add("grow");
