@@ -44,6 +44,13 @@ class GameScene extends Phaser.Scene {
             this.scene.start("GameScene");
         }, this);
 
+        let logo = this.add.sprite(Another4096.game.config.width / 2, Another4096.game.config.height, "logo");
+        logo.setOrigin(0.5, 1);
+        logo.setInteractive();
+        logo.on("pointerdown", function () {
+            window.location.href = "https://github.com/Lazyb0y/"
+        });
+
         /* Initializing sounds */
         this.moveSound = this.sound.add("move");
         this.growSound = this.sound.add("grow");
