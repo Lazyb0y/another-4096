@@ -30,6 +30,9 @@ class GameScene extends Phaser.Scene {
         let gameTitle = this.add.image(10, 5, "gametitle");
         gameTitle.setOrigin(0, 0);
 
+        let howTo = this.add.image(Another4096.game.config.width, 5, "howtoplay");
+        howTo.setOrigin(1, 0);
+
         /* Initializing sounds */
         this.moveSound = this.sound.add("move");
         this.growSound = this.sound.add("grow");
