@@ -13,7 +13,10 @@ Another4096.GameOptions = {
         minDistance: 20,
         minNormal: 0.85
     },
-    aspectRatio: 16 / 9
+    aspectRatio: 16 / 9,
+    storage: {
+        bestScore: "bestScore"
+    }
 };
 
 Another4096.SwipeDirection = {

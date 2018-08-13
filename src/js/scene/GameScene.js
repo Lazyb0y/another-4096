@@ -7,7 +7,9 @@ class GameScene extends Phaser.Scene {
         this.boardArray = [];
         this.canMove = false;
         this.movingTiles = 0;
+
         this.score = 0;
+        this.bestScore = 0;
 
         this.scoreText = null;
         this.bestScoreText = null;
@@ -64,6 +66,13 @@ class GameScene extends Phaser.Scene {
         /* Initializing sounds */
         this.moveSound = this.sound.add("move");
         this.growSound = this.sound.add("grow");
+
+        /* Showing best score from local storage */
+        this.bestScore = localStorage.getItem(Another4096.GameOptions.storage.bestScore);
+        if (this.bestScore == null) {
+            this.bestScore = 0;
+        }
+        this.bestScoreText.text = this.bestScore.toString();
 
         this.addTile();
         this.addTile();
@@ -243,6 +252,11 @@ class GameScene extends Phaser.Scene {
 
     refreshBoard() {
         this.scoreText.text = this.score.toString();
+        if (this.score > this.bestScore) {
+            this.bestScore = this.score;
+            localStorage.setItem(Another4096.GameOptions.storage.bestScore, this.bestScore);
+            this.bestScoreText.text = this.bestScore.toString();
+        }
 
         for (let i = 0; i < Another4096.GameOptions.boardSize.rows; i++) {
             for (let j = 0; j < Another4096.GameOptions.boardSize.cols; j++) {
