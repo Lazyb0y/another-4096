@@ -52,7 +52,7 @@ window.onload = function () {
         width: width,
         height: width * Another4096.GameOptions.aspectRatio,
         backgroundColor: 0xecf0f1,
-        scene: [PreloadScene, GameScene]
+        scene: [BootScene, PreloadScene, GameScene]
     };
 
     /* Initializing the Phaser 3 framework */

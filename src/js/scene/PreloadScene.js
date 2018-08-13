@@ -4,6 +4,10 @@ class PreloadScene extends Phaser.Scene {
     }
 
     preload() {
+        /* Showing loading icon */
+        let appIcon = this.add.image(Another4096.game.config.width / 2, Another4096.game.config.height / 4, "appicon");
+        appIcon.setOrigin(0.5, 0.5);
+
         /* Loading images and sprites */
         this.load.image("emptytile", "assets/sprites/emptytile.png");
         this.load.image("gametitle", "assets/sprites/gametitle.png");
