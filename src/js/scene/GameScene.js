@@ -7,6 +7,7 @@ class GameScene extends Phaser.Scene {
         this.boardArray = [];
         this.canMove = false;
         this.movingTiles = 0;
+        this.score = 0;
 
         this.scoreText = null;
         this.bestScoreText = null;
@@ -163,6 +164,7 @@ class GameScene extends Phaser.Scene {
                         if (willUpdate) {
                             this.boardArray[newRow][newCol].tileValue++;
                             this.boardArray[newRow][newCol].upgraded = true;
+                            this.score += Math.pow(2, this.boardArray[newRow][newCol].tileValue);
                         }
                         else {
                             this.boardArray[newRow][newCol].tileValue = tileValue;
@@ -240,6 +242,8 @@ class GameScene extends Phaser.Scene {
     }
 
     refreshBoard() {
+        this.scoreText.text = this.score.toString();
+
         for (let i = 0; i < Another4096.GameOptions.boardSize.rows; i++) {
             for (let j = 0; j < Another4096.GameOptions.boardSize.cols; j++) {
                 let spritePosition = GameScene.getTilePosition(i, j);
