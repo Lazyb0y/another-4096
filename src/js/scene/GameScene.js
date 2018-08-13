@@ -7,6 +7,9 @@ class GameScene extends Phaser.Scene {
         this.boardArray = [];
         this.canMove = false;
         this.movingTiles = 0;
+
+        this.scoreText = null;
+        this.bestScoreText = null;
     }
 
     create() {
@@ -36,6 +39,12 @@ class GameScene extends Phaser.Scene {
         let scoreXY = GameScene.getTilePosition(-0.8, 1);
         this.add.image(scoreXY.x, scoreXY.y, "scorepanel");
         this.add.image(scoreXY.x, scoreXY.y - 70, "scorelabels");
+
+        let textXY = GameScene.getTilePosition(-0.92, -0.4);
+        this.scoreText = this.add.bitmapText(textXY.x, textXY.y, "font", "0");
+
+        let bestScoreTextXY = GameScene.getTilePosition(-0.92, 1.1);
+        this.bestScoreText = this.add.bitmapText(bestScoreTextXY.x, bestScoreTextXY.y, "font", "0");
 
         let restartXY = GameScene.getTilePosition(-0.8, Another4096.GameOptions.boardSize.cols - 1);
         let restartButton = this.add.sprite(restartXY.x, restartXY.y, "restart");
