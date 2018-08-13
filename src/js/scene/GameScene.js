@@ -111,14 +111,14 @@ class GameScene extends Phaser.Scene {
 
                     if (newRow !== curRow || newCol !== curCol) {
                         let newPos = GameScene.getTilePosition(newRow, newCol);
-                        this.moveTile(this.boardArray[curRow][curCol].tileSprite, newPos);
+                        let willUpdate = this.boardArray[newRow][newCol].tileValue === tileValue;
+                        this.moveTile(this.boardArray[curRow][curCol].tileSprite, newPos, willUpdate);
                         this.boardArray[curRow][curCol].tileValue = 0;
 
                         /* Merging tiles */
-                        if (this.boardArray[newRow][newCol].tileValue === tileValue) {
+                        if (willUpdate) {
                             this.boardArray[newRow][newCol].tileValue++;
                             this.boardArray[newRow][newCol].upgraded = true;
-                            this.boardArray[curRow][curCol].tileSprite.setFrame(tileValue);
                         }
                         else {
                             this.boardArray[newRow][newCol].tileValue = tileValue;
@@ -133,7 +133,7 @@ class GameScene extends Phaser.Scene {
         }
     }
 
-    moveTile(tile, point) {
+    moveTile(tile, point, upgrade) {
         this.movingTiles++;
         tile.depth = this.movingTiles;
         let distance = Math.abs(tile.x - point.x) + Math.abs(tile.y - point.y);
@@ -144,13 +144,38 @@ class GameScene extends Phaser.Scene {
             duration: Another4096.GameOptions.tweenSpeed * distance / Another4096.GameOptions.tileSize,
             callbackScope: this,
             onComplete: function () {
-                this.movingTiles--;
-                tile.depth = 0;
-                if (this.movingTiles === 0) {
-                    this.refreshBoard();
+                if (upgrade) {
+                    this.upgradeTile(tile);
+                }
+                else {
+                    this.endTween(tile);
                 }
             }
         })
+    }
+
+    upgradeTile(tile) {
+        tile.setFrame(tile.frame.name + 1);
+        this.tweens.add({
+            targets: [tile],
+            scaleX: 1.1,
+            scaleY: 1.1,
+            duration: Another4096.GameOptions.tweenSpeed,
+            yoyo: true,
+            repeat: 1,
+            callbackScope: this,
+            onComplete: function () {
+                this.endTween(tile);
+            }
+        })
+    }
+
+    endTween(tile) {
+        this.movingTiles--;
+        tile.depth = 0;
+        if (this.movingTiles === 0) {
+            this.refreshBoard();
+        }
     }
 
     isLegalPosition(row, col, value) {
