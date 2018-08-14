@@ -9,6 +9,7 @@ class GameScene extends Phaser.Scene {
         this.movingTiles = 0;
 
         this.score = 0;
+        this.scoreBuffer = 0;
         this.bestScore = 0;
 
         this.scoreText = null;
@@ -80,6 +81,25 @@ class GameScene extends Phaser.Scene {
         /* Enabled player input method */
         this.input.keyboard.on("keydown", this.handleKey, this);
         this.input.on("pointerup", this.handleSwipe, this);
+    }
+
+    update() {
+        /* While there is score in the score buffer, add it to the actual score */
+        if (this.scoreBuffer > 0) {
+            this.incrementScore();
+            this.scoreBuffer--;
+        }
+    }
+
+    incrementScore() {
+        this.score++;
+        this.scoreText.text = this.score.toString();
+
+        if (this.score > this.bestScore) {
+            this.bestScore = this.score;
+            this.bestScoreText.text = this.bestScore.toString();
+            localStorage.setItem(Another4096.GameOptions.storage.bestScore, this.bestScore);
+        }
     }
 
     /**
@@ -173,7 +193,7 @@ class GameScene extends Phaser.Scene {
                         if (willUpdate) {
                             this.boardArray[newRow][newCol].tileValue++;
                             this.boardArray[newRow][newCol].upgraded = true;
-                            this.score += Math.pow(2, this.boardArray[newRow][newCol].tileValue);
+                            this.scoreBuffer += Math.pow(2, this.boardArray[newRow][newCol].tileValue);
                         }
                         else {
                             this.boardArray[newRow][newCol].tileValue = tileValue;
@@ -256,13 +276,6 @@ class GameScene extends Phaser.Scene {
     }
 
     refreshBoard() {
-        this.scoreText.text = this.score.toString();
-        if (this.score > this.bestScore) {
-            this.bestScore = this.score;
-            localStorage.setItem(Another4096.GameOptions.storage.bestScore, this.bestScore);
-            this.bestScoreText.text = this.bestScore.toString();
-        }
-
         for (let i = 0; i < Another4096.GameOptions.boardSize.rows; i++) {
             for (let j = 0; j < Another4096.GameOptions.boardSize.cols; j++) {
                 let spritePosition = GameScene.getTilePosition(i, j);
