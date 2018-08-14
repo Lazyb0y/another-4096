@@ -10,7 +10,6 @@ class GameScene extends Phaser.Scene {
 
         this.score = 0;
         this.scoreBuffer = 0;
-        this.scoreBufferCarrier = 0;
         this.bestScore = 0;
 
         this.scoreText = null;
@@ -101,6 +100,33 @@ class GameScene extends Phaser.Scene {
             this.bestScoreText.text = this.bestScore.toString();
             localStorage.setItem(Another4096.GameOptions.storage.bestScore, this.bestScore);
         }
+    }
+
+    createScoreAnimation(x, y, message, score) {
+        let scoreFont = "40px Arial";
+
+        /* Create a new label for the score */
+        let scoreAnimation = this.add.text(x, y, message, {
+            font: scoreFont,
+            fill: "#39d179",
+            stroke: "#ffffff",
+            strokeThickness: 15
+        });
+        scoreAnimation.setOrigin(0.5, 0);
+        scoreAnimation.align = 'center';
+
+        /* Tween this score label to the total score label */
+        this.tweens.add({
+            targets: [scoreAnimation],
+            x: this.scoreText.x + 35,
+            y: this.scoreText.y - 5,
+            duration: 800,
+            callbackScope: this,
+            onComplete: function () {
+                scoreAnimation.destroy();
+                this.scoreBuffer += score;
+            }
+        });
     }
 
     /**
@@ -194,7 +220,7 @@ class GameScene extends Phaser.Scene {
                         if (willUpdate) {
                             this.boardArray[newRow][newCol].tileValue++;
                             this.boardArray[newRow][newCol].upgraded = true;
-                            this.scoreBufferCarrier += Math.pow(2, this.boardArray[newRow][newCol].tileValue);
+
                         }
                         else {
                             this.boardArray[newRow][newCol].tileValue = tileValue;
@@ -277,9 +303,6 @@ class GameScene extends Phaser.Scene {
     }
 
     refreshBoard() {
-        this.scoreBuffer = this.scoreBufferCarrier;
-        this.scoreBufferCarrier = 0;
-
         for (let i = 0; i < Another4096.GameOptions.boardSize.rows; i++) {
             for (let j = 0; j < Another4096.GameOptions.boardSize.cols; j++) {
                 let spritePosition = GameScene.getTilePosition(i, j);
@@ -289,6 +312,12 @@ class GameScene extends Phaser.Scene {
                 if (tileValue > 0) {
                     this.boardArray[i][j].tileSprite.visible = true;
                     this.boardArray[i][j].tileSprite.setFrame(tileValue - 1);
+
+                    if (this.boardArray[i][j].upgraded) {
+                        let scoreToAdd = Math.pow(2, tileValue);
+                        let tileSprite = this.boardArray[i][j].tileSprite;
+                        this.createScoreAnimation(tileSprite.x, tileSprite.y, '+' + scoreToAdd, scoreToAdd);
+                    }
                     this.boardArray[i][j].upgraded = false;
                 }
                 else {
