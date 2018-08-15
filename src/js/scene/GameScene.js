@@ -14,6 +14,11 @@ class GameScene extends Phaser.Scene {
 
         this.scoreText = null;
         this.bestScoreText = null;
+
+        this.previousClientWidth = 0;
+        this.previousClientHeight = 0;
+
+        this.isPortraitMode = true;
     }
 
     create() {
@@ -88,6 +93,27 @@ class GameScene extends Phaser.Scene {
         if (this.scoreBuffer > 0) {
             this.incrementScore();
             this.scoreBuffer--;
+        }
+
+        if (!this.sys.game.device.os.desktop) {
+            let clientWidth = document.documentElement.clientWidth;
+            let clientHeight = document.documentElement.clientHeight;
+            if (clientWidth !== this.previousClientWidth || clientHeight !== this.previousClientHeight) {
+                this.previousClientWidth = clientWidth;
+                this.previousClientHeight = clientHeight;
+                this.handleScreenSizeChange();
+            }
+        }
+    }
+
+    handleScreenSizeChange() {
+        if (this.previousClientWidth > this.previousClientHeight) {
+            this.isPortraitMode = false;
+            document.getElementById("turn").style.display = "block";
+        }
+        else {
+            this.isPortraitMode = true;
+            document.getElementById("turn").style.display = "none";
         }
     }
 
@@ -330,7 +356,7 @@ class GameScene extends Phaser.Scene {
     }
 
     handleKey(e) {
-        if (this.canMove) {
+        if (this.canMove && this.isPortraitMode) {
             switch (e.code) {
                 case "KeyA":
                 case "ArrowLeft":
@@ -353,7 +379,7 @@ class GameScene extends Phaser.Scene {
     }
 
     handleSwipe(e) {
-        if (this.canMove) {
+        if (this.canMove && this.isPortraitMode) {
             let swipeTime = e.upTime - e.downTime;
             let fastEnough = swipeTime < Another4096.GameOptions.swipe.maxTime;
             let swipe = new Phaser.Geom.Point(e.upX - e.downX, e.upY - e.downY);
