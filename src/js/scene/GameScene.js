@@ -95,7 +95,7 @@ class GameScene extends Phaser.Scene {
             this.scoreBuffer--;
         }
 
-        if (!this.sys.game.device.os.desktop) {
+        if (this.sys.game.device.os.android || this.sys.game.device.os.iPhone || this.sys.game.device.os.iPad) {
             let clientWidth = document.documentElement.clientWidth;
             let clientHeight = document.documentElement.clientHeight;
             if (clientWidth !== this.previousClientWidth || clientHeight !== this.previousClientHeight) {
